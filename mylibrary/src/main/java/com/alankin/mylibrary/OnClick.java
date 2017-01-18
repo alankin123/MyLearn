@@ -1,4 +1,4 @@
-package com.alankin.mylearn;
+package com.alankin.mylibrary;
 
 import android.view.View;
 

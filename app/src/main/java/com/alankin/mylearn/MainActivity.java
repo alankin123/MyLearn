@@ -5,6 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alankin.mylibrary.AlanKinUtil;
+import com.alankin.mylibrary.BindView;
+import com.alankin.mylibrary.ContentView;
+import com.alankin.mylibrary.OnClick;
+
 @ContentView(value = R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
     @BindView(value = R.id.tv_hello)

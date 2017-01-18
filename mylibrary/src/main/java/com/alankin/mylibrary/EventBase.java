@@ -1,4 +1,4 @@
-package com.alankin.mylearn;
+package com.alankin.mylibrary;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

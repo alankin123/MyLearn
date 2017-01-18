@@ -1,0 +1,20 @@
+package com.alankin.hihttp;
+
+/**
+ * Created by alankin on 2017/1/18.
+ */
+public interface Call<T> {
+    /**
+     * 同步请求方法
+     */
+    Response<T> excute();
+
+    /**
+     * 异步请求方法
+     *
+     * @param callBack
+     */
+    void enquee(CallBack<Response<T>> callBack);
+
+
+}
