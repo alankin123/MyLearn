@@ -1,7 +1,5 @@
 package com.alankin.hihttp;
 
-import okhttp3.OkHttpClient;
-
 /**
  * Created by alankin on 2017/1/18.
  */

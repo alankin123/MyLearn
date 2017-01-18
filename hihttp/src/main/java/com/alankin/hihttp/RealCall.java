@@ -5,13 +5,17 @@ package com.alankin.hihttp;
  */
 public abstract class RealCall<T> implements Call<T> {
     HttpClient httpClient;
+    CallBack<T> callBack;
 
     public RealCall(HttpClient httpClient) {
         this.httpClient = httpClient;
     }
 
+    /**
+     * 推进准备池中
+     */
     void push2ReadyPool() {
-
+        ReadyPool.getInstance().add(this);
     }
 
     /**

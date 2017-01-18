@@ -7,14 +7,14 @@ public interface Call<T> {
     /**
      * 同步请求方法
      */
-    Response<T> excute();
+    T excute();
 
     /**
      * 异步请求方法
      *
      * @param callBack
      */
-    void enquee(CallBack<Response<T>> callBack);
+    void enquee(CallBack<T> callBack);
 
 
 }
