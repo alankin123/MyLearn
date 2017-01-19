@@ -8,13 +8,4 @@ public class ByteArrCall extends RealCall<byte[]> {
         super(httpClient);
     }
 
-    @Override
-    public byte[] excute() {
-        return new Connect(httpClient).connect();
-    }
-
-    @Override
-    public void enquee(CallBack<byte[]> callBack) {
-        this.callBack = callBack;
-    }
 }

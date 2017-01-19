@@ -16,8 +16,8 @@ public class HttpClient {
      *
      * @return
      */
-    Call newCall() {
-        return null;
+    public StringCall newCall() {
+        return new StringCall(this);
     }
 
     public static class Builder {
@@ -26,21 +26,22 @@ public class HttpClient {
         int readTimeOut;
         Request request;
 
-        Builder setConnectTimeOut(int connectTimeOut) {
+        public Builder setConnectTimeOut(int connectTimeOut) {
             this.connectTimeOut = connectTimeOut;
             return this;
         }
 
-        Builder setReadTimeOut(int readTimeOut) {
+        public Builder setReadTimeOut(int readTimeOut) {
             this.readTimeOut = readTimeOut;
             return this;
         }
 
-        void setRequest(Request request) {
+        public Builder setRequest(Request request) {
             httpClient.request = request;
+            return this;
         }
 
-        HttpClient build() {
+        public HttpClient build() {
             httpClient = new HttpClient();
             httpClient.connectTimeOut = connectTimeOut;
             httpClient.readTimeOut = readTimeOut;

@@ -1,6 +1,8 @@
 package com.alankin.hihttp;
 
 import java.util.Iterator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -10,12 +12,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ReadyPool {
     private static ReadyPool singleton;
     private HttpExcutorPool excutorPool;//线程池
-    private LinkedBlockingQueue queue;//阻塞队列池
-    private Thread pushService;//轮训推进服务
+    private LinkedBlockingQueue<RealCall> queue;//阻塞队列池
+    private ExecutorService executorService;
+    private boolean isLoopOn = false;//循环是否开启
 
     private ReadyPool() {
         excutorPool = HttpExcutorPool.getInstance();
         queue = new LinkedBlockingQueue();
+        executorService = Executors.newSingleThreadExecutor();
     }
 
     public static ReadyPool getInstance() {
@@ -34,35 +38,32 @@ public class ReadyPool {
      *
      * @param call
      */
-    public synchronized void add(Call call) {
+    public synchronized void add(RealCall call) {
         try {
             queue.put(call);
+            //当队列不为空，且循环未开启则启动循环服务
+            if (!queue.isEmpty() && !isLoopOn) {
+                startPushService();
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * 放进线程池中
-     */
-    private void push2ExcutorPool() {
-    }
-
-    /**
-     * （懒汉）启动推进服务
+     * 循环放进线程池中
      */
     private synchronized void startPushService() {
-        if (pushService != null) {
-            pushService = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        Iterator iterator = queue.iterator();
-                        while(iterator.hasNext()){
-                        }
-                    }
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                for (RealCall realCall : queue) {
+                    excutorPool.add(realCall);
                 }
-            });
-        }
+                isLoopOn = false;
+            }
+        });
+        isLoopOn = true;
     }
+
 }

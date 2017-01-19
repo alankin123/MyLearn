@@ -18,6 +18,17 @@ public abstract class RealCall<T> implements Call<T> {
         ReadyPool.getInstance().add(this);
     }
 
+    @Override
+    public void enquee(CallBack<T> callBack) {
+        this.callBack = callBack;
+        push2ReadyPool();
+    }
+
+    @Override
+    public T excute() {
+        return (T) new Connect(httpClient).connect();
+    }
+
     /**
      * 取消请求
      */

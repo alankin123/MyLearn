@@ -24,6 +24,7 @@ public class Connect {
     }
 
     synchronized byte[] connect() {
+        Utils.log("connect()");
         byte[] bytes = null;
         if (request == null) {
             Utils.log("request is null");
@@ -60,8 +61,12 @@ public class Connect {
             httpURLConnection.setRequestMethod(method);
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);
-            httpURLConnection.setConnectTimeout(connectTimeOut);
-            httpURLConnection.setReadTimeout(readTimeOut);
+            if (connectTimeOut != 0) {
+                httpURLConnection.setConnectTimeout(connectTimeOut);
+            }
+            if (readTimeOut != 0) {
+                httpURLConnection.setReadTimeout(readTimeOut);
+            }
             httpURLConnection.setUseCaches(false);
             if (headers != null && !headers.isEmpty()) {
                 Set<Map.Entry<String, String>> entries = headers.entrySet();

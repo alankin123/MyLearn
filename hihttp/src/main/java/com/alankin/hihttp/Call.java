@@ -16,5 +16,4 @@ public interface Call<T> {
      */
     void enquee(CallBack<T> callBack);
 
-
 }

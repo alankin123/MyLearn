@@ -25,32 +25,32 @@ public class Request {
         com.alankin.hihttp.Headers headers;//头信息
         Params params;//请求参数
 
-        Builder Url(String url) throws MalformedURLException {
+        public Builder Url(String url) {
             Builder.this.url = url;
             return this;
         }
 
-        Builder post() {
+        public Builder post() {
             this.method = Method.POST;
             return this;
         }
 
-        Builder get() {
+        public Builder get() {
             this.method = Method.GET;
             return this;
         }
 
-        Builder put() {
+        public Builder put() {
             this.method = Method.PUT;
             return this;
         }
 
-        Builder delete() {
+        public Builder delete() {
             this.method = Method.DELETE;
             return this;
         }
 
-        Builder head(String key, String value) {
+        public Builder head(String key, String value) {
             if (headers == null) {
                 headers = new com.alankin.hihttp.Headers();
             } else {
@@ -60,7 +60,7 @@ public class Request {
             return this;
         }
 
-        Builder headers(com.alankin.hihttp.Headers headers) {
+        public Builder headers(com.alankin.hihttp.Headers headers) {
             if (headers == null) {
                 return this;
             }
@@ -68,7 +68,7 @@ public class Request {
             return this;
         }
 
-        Builder Params(Params params) {
+        public Builder Params(Params params) {
             if (params == null) {
                 return this;
             }
@@ -76,7 +76,7 @@ public class Request {
             return this;
         }
 
-        Request build() {
+        public Request build() {
             Request request = new Request();
             request.url = url;
             request.method = method;

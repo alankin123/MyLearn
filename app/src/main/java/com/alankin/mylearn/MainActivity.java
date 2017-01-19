@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alankin.hihttp.HttpClient;
+import com.alankin.hihttp.Request;
 import com.alankin.mylibrary.AlanKinUtil;
 import com.alankin.mylibrary.BindView;
 import com.alankin.mylibrary.ContentView;
@@ -33,6 +36,15 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.btn_hello)
     public void onClickBtn(View view) {
         btn_hello.setText("点击了btn_hello！绑定事件成功");
+        Request.Builder builder = new Request.Builder();
+        Request request = builder
+                .get()
+                .Url("http://www.cnblogs.com/wlming/p/5553207.html")
+                .build();
+        HttpClient.Builder builder1 = new HttpClient.Builder();
+        HttpClient httpClient = builder1.setRequest(request).build();
+        String s = httpClient.newCall().excute();
+        Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btn_hello1)
