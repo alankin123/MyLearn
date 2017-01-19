@@ -1,5 +1,6 @@
 package com.alankin.hihttp;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
@@ -13,6 +14,21 @@ import java.util.Set;
  * 转换工具类
  */
 public class Utils {
+    public static String jointUrl(String baseUrl, String joint) {
+        String ret = "";
+        if (TextUtils.isEmpty(joint)) {
+            ret = baseUrl;
+            return ret;
+        }
+        if (joint.startsWith("/") || joint.startsWith("\\")) {
+            ret = baseUrl + joint;
+            if (ret.endsWith("/") || ret.endsWith("\\")) {
+                ret = ret.substring(0, ret.length() - 1);
+            }
+        }
+        return ret;
+    }
+
     /**
      * Param转字节数组
      *

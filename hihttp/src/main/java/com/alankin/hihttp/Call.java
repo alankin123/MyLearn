@@ -7,7 +7,7 @@ public interface Call<T> {
     /**
      * 同步请求方法
      */
-    T excute();
+    byte[] excute();
 
     /**
      * 异步请求方法

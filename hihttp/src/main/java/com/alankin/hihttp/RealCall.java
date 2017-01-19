@@ -1,5 +1,7 @@
 package com.alankin.hihttp;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Created by alankin on 2017/1/18.
  */
@@ -25,8 +27,11 @@ public abstract class RealCall<T> implements Call<T> {
     }
 
     @Override
-    public T excute() {
-        return (T) new Connect(httpClient).connect();
+    public byte[] excute() {
+
+        return new Connect(httpClient).connect();
+
+
     }
 
     /**

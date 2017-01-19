@@ -1,6 +1,5 @@
 package com.alankin.hihttp;
 
-import java.net.MalformedURLException;
 import java.util.Map;
 
 /**

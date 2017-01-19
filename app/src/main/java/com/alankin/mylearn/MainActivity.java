@@ -1,6 +1,7 @@
 package com.alankin.mylearn;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import com.alankin.hihttp.HttpClient;
 import com.alankin.hihttp.Request;
+import com.alankin.hihttp.Utils;
 import com.alankin.mylibrary.AlanKinUtil;
 import com.alankin.mylibrary.BindView;
 import com.alankin.mylibrary.ContentView;
@@ -32,19 +34,40 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View view) {
         tv_hello.setText("点击了我！绑定事件成功");
     }
-
+/*
     @OnClick(R.id.btn_hello)
     public void onClickBtn(View view) {
         btn_hello.setText("点击了btn_hello！绑定事件成功");
+
+    }*/
+
+    public void lala(View view) {
+        Handler handler = new Handler();
         Request.Builder builder = new Request.Builder();
         Request request = builder
                 .get()
-                .Url("http://www.cnblogs.com/wlming/p/5553207.html")
+                .Url("http://139.224.29.103/doc/user.html")
                 .build();
         HttpClient.Builder builder1 = new HttpClient.Builder();
-        HttpClient httpClient = builder1.setRequest(request).build();
-        String s = httpClient.newCall().excute();
-        Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
+        final HttpClient httpClient = builder1
+                .setRequest(request)
+                .setConnectTimeOut(60 * 1000)
+                .setReadTimeOut(60 * 1000)
+                .build();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final byte[] excute = httpClient.newCall().excute();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Utils.log(excute.length + "");
+                        Utils.log(new String(excute));
+                    }
+                });
+            }
+        }).start();
+
     }
 
     @OnClick(R.id.btn_hello1)

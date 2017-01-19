@@ -24,10 +24,8 @@ public class Connect {
     }
 
     synchronized byte[] connect() {
-        Utils.log("connect()");
-        byte[] bytes = null;
+        byte[] bytes = new byte[1];
         if (request == null) {
-            Utils.log("request is null");
             throw new IllegalArgumentException("request is null");
         }
 
@@ -43,7 +41,10 @@ public class Connect {
         //判断请求方式
         try {
             if (method.equalsIgnoreCase(Method.GET.getMethod())) {//get请求
-                url = new URL(path + "/" + Utils.Param2String(params));
+                String s = Utils.jointUrl(path, Utils.Param2String(params));
+                url = new URL(s);
+                Utils.log(s);
+                Utils.log(url.getPath());
             } else if (request.method.getMethod().equalsIgnoreCase(Method.POST.getMethod())) {//post请求
                 url = new URL(path);
                 dataBytes = Utils.Param2ByteArr(params);
@@ -71,20 +72,25 @@ public class Connect {
             if (headers != null && !headers.isEmpty()) {
                 Set<Map.Entry<String, String>> entries = headers.entrySet();
                 for (Map.Entry<String, String> entry : entries) {
+                    Utils.log("entry.getKey()"+entry.getKey());
+                    Utils.log(" entry.getValue()"+ entry.getValue());
                     httpURLConnection.setRequestProperty(entry.getKey(), entry.getValue());
                 }
             }
             //建立socket连接
             httpURLConnection.connect();
             if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(dataBytes);
-                outputStream.flush();
+                if (method.equalsIgnoreCase(Method.POST.getMethod())) {
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    outputStream.write(dataBytes);
+                    outputStream.flush();
+                    outputStream.close();
+                }
                 InputStream inputStream = httpURLConnection.getInputStream();
                 byte[] buff = new byte[1024];
-                int length = inputStream.read(buff);
+                int length;
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                while (length != -1) {
+                while ((length = inputStream.read(buff)) != -1) {
                     byteArrayOutputStream.write(buff);
                 }
                 //最终获得的字节数组

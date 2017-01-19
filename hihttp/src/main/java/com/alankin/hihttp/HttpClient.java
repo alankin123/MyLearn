@@ -37,7 +37,7 @@ public class HttpClient {
         }
 
         public Builder setRequest(Request request) {
-            httpClient.request = request;
+            this.request = request;
             return this;
         }
 
