@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public class Connect {
     }
 
     synchronized byte[] connect() {
-        byte[] bytes = new byte[1];
+        byte[] bytes = null;
         if (request == null) {
             throw new IllegalArgumentException("request is null");
         }
@@ -61,31 +62,40 @@ public class Connect {
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(method);
             httpURLConnection.setDoInput(true);
-            httpURLConnection.setDoOutput(true);
+
+            //post请求才需要设置，get请求如果设置为true在请求具体资源的时候会405错误
+            if (request.method.getMethod().equalsIgnoreCase(Method.POST.getMethod())) {
+                httpURLConnection.setDoOutput(true);
+                //post请求不能使用缓存
+                httpURLConnection.setUseCaches(false);
+            }
             if (connectTimeOut != 0) {
                 httpURLConnection.setConnectTimeout(connectTimeOut);
             }
             if (readTimeOut != 0) {
                 httpURLConnection.setReadTimeout(readTimeOut);
             }
-            httpURLConnection.setUseCaches(false);
             if (headers != null && !headers.isEmpty()) {
                 Set<Map.Entry<String, String>> entries = headers.entrySet();
                 for (Map.Entry<String, String> entry : entries) {
-                    Utils.log("entry.getKey()"+entry.getKey());
-                    Utils.log(" entry.getValue()"+ entry.getValue());
                     httpURLConnection.setRequestProperty(entry.getKey(), entry.getValue());
                 }
             }
+
             //建立socket连接
             httpURLConnection.connect();
+            //post请求的写操作必须要在getResponseCode()之后，否则会报错，读操作无所谓
+            if (method.equalsIgnoreCase(Method.POST.getMethod())) {
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(dataBytes);
+                outputStream.flush();
+                outputStream.close();
+                Utils.log("outputStream");
+            }
+
             if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                if (method.equalsIgnoreCase(Method.POST.getMethod())) {
-                    OutputStream outputStream = httpURLConnection.getOutputStream();
-                    outputStream.write(dataBytes);
-                    outputStream.flush();
-                    outputStream.close();
-                }
+                Utils.log("HTTP_OK");
+                Utils.log("dataBytes:" + dataBytes.toString());
                 InputStream inputStream = httpURLConnection.getInputStream();
                 byte[] buff = new byte[1024];
                 int length;
@@ -95,13 +105,18 @@ public class Connect {
                 }
                 //最终获得的字节数组
                 bytes = byteArrayOutputStream.toByteArray();
+                inputStream.close();
             } else {
+                Utils.log("getResponseCode()" + httpURLConnection.getResponseCode());
                 Utils.log("connect error!");
             }
+            httpURLConnection.disconnect();
 
         } catch (IOException e) {
+            Utils.log("e.getMessage" + e.getMessage());
             e.printStackTrace();
         }
+
         return bytes;
     }
 

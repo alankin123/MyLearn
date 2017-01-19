@@ -13,6 +13,7 @@ public class HttpExcutorPool {
     private static HttpExcutorPool singleton;
     private final static int NUM = 5;
     private final ExecutorService executorService;
+    Handler handler = new Handler();
 
     private HttpExcutorPool() {
         executorService = Executors.newFixedThreadPool(NUM);
@@ -38,13 +39,16 @@ public class HttpExcutorPool {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                final Object data = call.excute();
-                Handler handler = new Handler();
+                final byte[] data = call.excute();
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         if (call.callBack != null) {
-                            call.callBack.onSuccess(data);
+                            if (data != null) {
+                                call.callBack.onSuccess(new String(data));
+                            } else {
+                                call.callBack.onError();
+                            }
                         }
                     }
                 });

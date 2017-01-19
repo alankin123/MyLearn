@@ -28,7 +28,6 @@ public abstract class RealCall<T> implements Call<T> {
 
     @Override
     public byte[] excute() {
-
         return new Connect(httpClient).connect();
 
 

@@ -96,6 +96,7 @@ public class Utils {
                 e.printStackTrace();
             }
         }
+        Utils.log("HashMap2String:" + str);
         return str;
     }
 
