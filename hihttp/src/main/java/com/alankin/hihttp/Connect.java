@@ -101,7 +101,7 @@ public class Connect {
                 int length;
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 while ((length = inputStream.read(buff)) != -1) {
-                    byteArrayOutputStream.write(buff);
+                    byteArrayOutputStream.write(buff, 0, length);
                 }
                 //最终获得的字节数组
                 bytes = byteArrayOutputStream.toByteArray();

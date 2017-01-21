@@ -4,7 +4,7 @@ ext {
     bintrayName = 'mylibrary'//bintray仓库中新建包名称
     publishedGroupId = 'com.alankin.mylibrary'//自定义引用分组ID（一般为包名）
     artifact = 'mylibrary'//自定义引用名称
-    libraryVersion = '0.0.3'//版本说明
+    libraryVersion = '0.0.4'//版本说明
     libraryName = 'mylibrary'//库名字
     libraryDescription = 'A mylibrary on Android'//库说明
     siteUrl = 'https://github.com/alankin123/MyLearn'//github地址
@@ -20,13 +20,6 @@ ext {
 android {
     compileSdkVersion 23
     buildToolsVersion "24.0.0"
-
-    defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
-    }
 
     buildTypes {
         release {
