@@ -1,7 +1,6 @@
 # MyLearn
 1.hihttp简易网络请求框架  
-实现同步和异步请求两种方式，内核用urlconnection  
-
+实现同步和异步请求两种方式，内核用urlconnection,模拟 volley采用准备池和线程池机制。合理的控制请求队列
 2.mylibrary模拟butterknife
 使用注解和反射实现控件绑定及使用动态代理的方式动态的创建出点击事件接口代理对象，从而绑定事件。
 
