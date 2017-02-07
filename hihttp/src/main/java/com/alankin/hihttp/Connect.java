@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -116,7 +115,6 @@ public class Connect {
             Utils.log("e.getMessage" + e.getMessage());
             e.printStackTrace();
         }
-
         return bytes;
     }
 
